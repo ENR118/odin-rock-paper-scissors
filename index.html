@@ -6,9 +6,17 @@
     <title>Rock Paper Scissors</title>
 </head>
 <body>
+    <button id="rock-button">ROCK</button>
+    <button id="paper-button">PAPER</button>
+    <button id="scissors-button">SCISSORS</button>
+    <div id="result"></div>
+
     <script>
         let player_score = 0;
         let computer_score = 0;
+        let player_choice = "";
+        let result = "";
+        const buttons = document.querySelectorAll("button");
 
         function get_computer_choice() {
             let ran = Math.random();
@@ -61,30 +69,50 @@
                     break;
             }
 
-            console.log("player score: " + player_score);
-            console.log("computer score: " + computer_score);
+            result = player_score + " | " + computer_score;
+            document.getElementById("result").innerHTML = result;
         }
 
         function play_game() {
-            for (let i = 0; i < 5; i++) {
-                const player_choice = get_player_choice();
-                const computer_choice = get_computer_choice();
+            let computer_choice = get_computer_choice();
+            play_round(player_choice, computer_choice);
 
-                play_round(player_choice, computer_choice);
-            }
+            if (player_score === 5 || computer_score === 5) {
+                console.log("FINAL player score: " + player_score);
+                console.log("FINAL computer score: " + computer_score);
 
-            console.log("player score: " + player_score);
-            console.log("computer score: " + computer_score);
-            if (player_score > computer_score) {
-                console.log("player victory");
-            } else if (computer_score < player_score) {
-                console.log("computer victory");
-            } else {
-                console.log("tie");
+                if (player_score > computer_score) {
+                    console.log("player victory");
+                    result = "player victory";
+                } else if (computer_score > player_score) {
+                    console.log("computer victory");
+                    result = "computer victory";
+                } else {
+                    console.log("tie");
+                    result = "tie";
+                }
+
+                document.getElementById("result").innerHTML = result;
             }
         }
 
-        play_game();
+        buttons.forEach((button) => {
+            button.addEventListener("click", function (e) {
+                if (e.target.id == "rock-button") {
+                    player_choice = "rock";
+                }
+
+                if (e.target.id == "paper-button") {
+                    player_choice = "paper";
+                }
+
+                if (e.target.id == "scissors-button") {
+                    player_choice = "scissors";
+                }
+
+                play_game();
+            })
+        })
     </script>
 </body>
 </html>
